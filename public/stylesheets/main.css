@@ -1,0 +1,53 @@
+/* Buttons */
+#selection .button {
+	margin-top: 20px;
+}
+
+/* Letters */
+#letters {
+	height: 700px;
+	width: 700px;
+}
+.letter {
+	height: 100px;
+	width: 100px;
+	float: left;
+	text-align: center;
+	margin: 20px;
+	color:#fff;
+}
+.letter p {
+	font-size: 24px;
+}
+.letter.unclaimed {
+	background: lightGrey;
+	color: #fff;
+}
+.letter.p1 {
+	background: red;
+	color: #000;
+}
+.letter.p2 {
+	background: blue;
+	color: #000;
+}
+input{
+	text-align: center;
+	background-color: lightGrey;
+}
+.hidden {
+	display: none;
+}
+.centered {
+	text-align: center;
+	margin: auto;
+}
+.selected-mine {
+	background-color: red;
+}
+.selected-theirs {
+	background-color: blue;
+}
+ul {
+	text-decoration: none;
+}
