@@ -52,26 +52,5 @@ $(function(){
 		selector.selectable("enable");
 	});
 
-	$('.getResult').on('click',function(){
-		lettersGiven = letters.children("p").text();
-		if (lettersGiven.length != 25){
-			//TODO: YOU KNOW WHAT TO DO
-			alert("Please fill in all letters");
-			return false;
-		}
-		var colors = "";
-		letters.each(function(index,element){
-			element = $(element);
-			if (element.hasClass("selected-mine")){
-				colors +=  index.toString() + "m";
-			} else if (element.hasClass("selected-theirs")){
-				colors +=  index.toString() + "t";
-			}
-		});	
-		alert("String to send to backend: " + lettersGiven + " " + colors);
-
-	});
-
-
-
+	
 })
