@@ -19,10 +19,7 @@
 .letter p {
 	font-size: 24px;
 }
-.letter.unclaimed {
-	background: lightGrey;
-	color: #fff;
-}
+
 .letter.p1 {
 	background: red;
 	color: #000;
@@ -42,12 +39,22 @@ input{
 	text-align: center;
 	margin: auto;
 }
+.selecting-mine {
+    background-color: #ff1d33;
+}
 .selected-mine {
 	background-color: red;
+}
+.selecting-theirs {
+    background-color: #526aff;
 }
 .selected-theirs {
 	background-color: blue;
 }
 ul {
 	text-decoration: none;
+}
+.letter.unclaimed {
+    background: lightGrey;
+    color: #fff;
 }
