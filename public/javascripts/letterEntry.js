@@ -7,7 +7,7 @@ $(function() {
 	});
 
 	var replaceWithInput = function(elem,e){
-		$this = $(elem);
+		var $this = $(elem);
 		var contents = $this.children();
 
 		if (contents.is("input")){
@@ -17,21 +17,22 @@ $(function() {
 		var textInput = $("<input/>", {
 			type: "text",
 			value: $.trim($this.text())
-		})
+		});
+
 		contents.replaceWith(textInput);
 
 		textInput.focus().select();
-	}
+	};
 
 	/**
 	* Turn p's into input's on div click
 	*/
 	$('#letters').on('click','.editable', function(e){
 		replaceWithInput(this,e);
-	})
+	});
 	$('#letters').on('focus','.editable', function(e){
 		replaceWithInput(this,e);
-	})
+	});
 
 	/**
 	* When input's lose focus, turn them back into p's
@@ -47,16 +48,16 @@ $(function() {
 		var textDisplay = $("<p>", {
 			class: contents.attr("class"),
 			id: contents.attr("id")
-		})
+		});
 		
 		textDisplay.text(contents.attr("value"));
 		contents.replaceWith(textDisplay);
 
 	    return true;
-	})
+	});
 	
 	$('#letters').on('keydown','.editable input', function(e){
-		$this = $(this);
+		var $this = $(this);
 		
 		var letters = $('#letters .letter');
 		var index = parseInt($this.closest(".letter").attr("data-value"));
@@ -92,7 +93,6 @@ $(function() {
 			// Escape
 			case 27:
 				found = true;
-				e;
 				$this.blur();
 				return false;
 				break;
@@ -101,7 +101,6 @@ $(function() {
 				if (e.keyCode >= 65 && e.keyCode <= 90){
 					$this.attr("value",String.fromCharCode(e.keyCode).toUpperCase());
 				} else {
-					e;
 					return false;
 				}
 		}

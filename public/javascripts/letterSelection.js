@@ -30,7 +30,7 @@ $(function(){
 	});
 
 	$('.claim').on('click', function(){
-		$this = $(this);
+		var $this = $(this);
 		letters.removeClass("editable");
 		displaySelectionText();
 		mode = $this.attr("id");
@@ -53,4 +53,4 @@ $(function(){
 	});
 
 	
-})
+});
