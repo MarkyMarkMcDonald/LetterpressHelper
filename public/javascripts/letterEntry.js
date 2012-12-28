@@ -65,34 +65,28 @@ $(function() {
 		
 		var nextElem = getElemFromIndex(nextIndex, letters);
 		
-		var found = false;
 		// Make left/right/up/down/tab navigate
 		switch (e.keyCode){
 			// Left and Backspace
 			case 37:
 			case 8:
 				nextIndex = (index - 1) % (letters.length);
-				found = true;
 				break;
 			// Up
 			case 38:
 				nextIndex = (index - 5) % (letters.length);
-				found = true;				
 				break;
 			// Right and Tab
 			case 39:
 			case 9:
 				nextIndex = (index + 1) % (letters.length);
-				found = true;
 				break;
 			// Down
 			case 40:
 				nextIndex = (index + 5) % (letters.length);
-				found = true;
 				break;
 			// Escape
 			case 27:
-				found = true;
 				$this.blur();
 				return false;
 				break;
