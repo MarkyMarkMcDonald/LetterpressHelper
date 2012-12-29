@@ -1,8 +1,8 @@
 $(function(){
-    // Handle checking if control is down
-    var deselectModifierOn = false;
-    // Alt will deselect
+    // Handle checking if alt (18) is down
     var deselectKeyCode = 18;
+    var deselectModifierOn = false;
+
     $('body').on('keydown',function(e){
         if (e.keyCode == deselectKeyCode){
             deselectModifierOn = true;
@@ -16,7 +16,7 @@ $(function(){
 
     var mode;
 	var selector = $('#letters');
-	var letters = $('#letters .letter');
+	var letters = selector.find('.letter');
 	var modeEntry = $('.mode-entry');
 	var modeSelection = $('.mode-selection');
 	
@@ -29,14 +29,6 @@ $(function(){
 		modeEntry.addClass("hidden");
 		modeSelection.removeClass("hidden")
 	};
-
-	$('.letter').bind('selecting', function(e){
-		alert("selected letter");
-	});
-
-	$('#letters p').bind('selecting', function(e){
-		alert("selected p");
-	});
 
 	$('.text-entry').on('click', function(){
 		letters.addClass("editable");
