@@ -211,14 +211,12 @@ $(function(){
 
 	$('.getResult').on('click',function(){
         var lettersGiven = [];
-        var charactersGiven = [];
         var filledOut = true;
 
         letterElements.each(function(index,element){
             element = $(element);
             //noinspection JSValidateTypes
             var character = element.children('p').text();
-            charactersGiven.push(character);
             // Create a letter
             var letter = new Letter(character,index);
             if (character === ""){
