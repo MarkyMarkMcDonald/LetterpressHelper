@@ -2,7 +2,7 @@ $(function(){
     var edgeWeight = 2;
     var cornerWeight = 3;
 	var lockedWeight = 2;
-    var letterElements = $('#letterElements').find('.letter');
+    var letterElements = $('#letters').find('.letter');
 
     /**
      * Pseudo Enum describing which player controls a letter
@@ -54,8 +54,13 @@ $(function(){
         // Default to Not Claimed
         this.claim = Claim.NONE;
 
-        this.isClaimed = function(){
-            return this.claim != Claim.NONE;
+        /**
+         * Checks to see if another claim is there and matches this one
+         * @param claim
+         * @return {boolean}
+         */
+        this.claimMatches = function(claim){
+            return this.claim != Claim.NONE && this.claim == claim;
         }
 
         this.getGeneralType = function(){
@@ -84,50 +89,51 @@ $(function(){
                 var up = letters[(i-5)%letters.length];
 
                 switch (letter.type){
+                    //TODO: Change this to see if claim type matches (but not none matching none)
                     case Type.MIDDLE:
-                        if (left.isClaimed() && right.isClaimed() && down.isClaimed() && up.isClaimed()){
+                        if (left.claimMatches(letter.claim) && right.claimMatches(letter.claim) && down.claimMatches(letter.claim) && up.claimMatches(letter.claim)){
                             letter.locked = true;
                         }
                         break;
                     case Type.LEFT_EDGE:
-                        if (right.isClaimed() && down.isClaimed() && up.isClaimed()){
+                        if (right.claimMatches(letter.claim) && down.claimMatches(letter.claim) && up.claimMatches(letter.claim)){
                             letter.locked = true;
                         }
                         break;
                     case Type.RIGHT_EDGE:
-                        if (left.isClaimed() && down.isClaimed() && up.isClaimed()){
+                        if (left.claimMatches(letter.claim) && down.claimMatches(letter.claim) && up.claimMatches(letter.claim)){
                             letter.locked = true;
                         }
                         break;
                     case Type.BOTTOM_EDGE:
-                        if (left.isClaimed() && right.isClaimed() && up.isClaimed()){
+                        if (left.claimMatches(letter.claim) && right.claimMatches(letter.claim) && up.claimMatches(letter.claim)){
                             letter.locked = true;
                         }
                         break;
                     case Type.TOP_EDGE:
-                        if (left.isClaimed() && right.isClaimed() && down.isClaimed()){
+                        if (left.claimMatches(letter.claim) && right.claimMatches(letter.claim) && down.claimMatches(letter.claim)){
                             letter.locked = true;
                         }
                         break;
                     case Type.TOP_LEFT_CORNER:
-                        if (right.isClaimed() && down.isClaimed()){
+                        if (right.claimMatches(letter.claim) && down.claimMatches(letter.claim)){
                             letter.locked = true;
                         }
                         break;
                     case Type.TOP_RIGHT_CORNER:
-                        if (left.isClaimed() && down.isClaimed()){
+                        if (left.claimMatches(letter.claim) && down.claimMatches(letter.claim)){
                             letter.locked = true;
                         }
                         break;
 
                     case Type.BOTTOM_LEFT_CORNER:
-                        if (right.isClaimed() && up.isClaimed()){
+                        if (right.claimMatches(letter.claim) && up.claimMatches(letter.claim)){
                             letter.locked = true;
                         }
                         break;
 
                     case Type.BOTTOM_RIGHT_CORNER:
-                        if (left.isClaimed() && up.isClaimed()){
+                        if (left.claimMatches(letter.claim) && up.claimMatches(letter.claim)){
                             letter.locked = true;
                         }
                         break;
@@ -209,11 +215,13 @@ $(function(){
     }
 
 
-	$('.getResult').on('click',function(){
+	$('#getResult').on('click',function(){
         var lettersGiven = [];
+        var indexes = [];
         var filledOut = true;
 
         letterElements.each(function(index,element){
+            indexes.push(index);
             element = $(element);
             //noinspection JSValidateTypes
             var character = element.children('p').text();
@@ -229,7 +237,7 @@ $(function(){
             } else if (element.hasClass("selected-theirs")){
                 letter.claim = Claim.THEIRS;
             } else {
-                letter.claim = Claim.THEIRS;
+                letter.claim = Claim.NONE;
             }
 
             // Set the Type (middle/edge/corner)
@@ -263,13 +271,32 @@ $(function(){
             alert("Please fill out every letter")
         } else {
             var initialBoard = new Board(lettersGiven);
-            initialBoard.setLocked();
+
+            initialBoard.setLocked(); // Set up initial board
+            console.log(initialBoard);
+
+            var wordList = DAGWordList(); // Set up Word List
+            var wordChecker = wordChecker();
+            wordChecker.setWordList(wordList);
+
+            wordList.addWord("read"); //
+            wordList.addWord("reader"); //TODO: Make this load from dictionary + start during page load
+            wordList.addWord("reading");
+            wordList.addWord("reads");
+            wordList.addWord("beds");
+            wordList.addWord("boring");
+            wordList.addWord("unfortunate");
 
 
         }
     });
 
+    $('#testPermutations').on('click',function(){
 
 
+        var items = $('#testCase').val().split(',');
+        console.log("permuted items");
+        console.log(wordChecker.permute(items));
 
+    })
 });

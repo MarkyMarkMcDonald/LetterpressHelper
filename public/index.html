@@ -50,10 +50,12 @@
 					<p class="mode-entry">Select a Box to begin Entering Letters</p>
 					<p class="mode-selection hidden">Click and Drag to Claim Tiles. </p>
 					<p class="mode-selection hidden">Click and Drag with Alt Pressed to Deselect Tiles.</p>
-					<button class="getResult button">Suggest Words</button>
+					<button id="getResult" class="button">Suggest Words</button>
                     <div id="wordSuggestions">
 
                     </div>
+                    <button id="testPermutations" class="button">Test Permutations</button>
+                    <input type="text" id="testCase">
 				</div>
 			</div>
 		</div>
@@ -136,6 +138,7 @@
   	<script src="javascripts/foundation/app.js"></script>
   	<script src="javascripts/jquery-ui-1.9.2.custom.min.js"></script>
     <script src="javascripts/DAGWordList.js"></script>
+    <script src="javascripts/permute.js"></script>
     <script src="javascripts/letterEntry.js"></script>
     <script src="javascripts/letterSelection.js"></script>
     <script src="javascripts/suggestionsResults.js"></script>
