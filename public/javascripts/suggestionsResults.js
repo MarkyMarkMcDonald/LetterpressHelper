@@ -1,4 +1,4 @@
-$(function(){
+
     var edgeWeight = 2;
     var cornerWeight = 3;
 	var lockedWeight = 2;
@@ -28,7 +28,7 @@ $(function(){
         TOP_RIGHT_CORNER: 6,
         BOTTOM_LEFT_CORNER: 7,
         BOTTOM_RIGHT_CORNER: 8
-    }
+    };
 
     /**
      * Pseudo Enum describing where the tile is generally on the board
@@ -38,7 +38,7 @@ $(function(){
         MIDDLE: 0,
         EDGE: 1,
         CORNER: 2
-    }
+    };
 
     /**
      * Represents a letter tile on the board
@@ -61,7 +61,7 @@ $(function(){
          */
         this.claimMatches = function(claim){
             return this.claim != Claim.NONE && this.claim == claim;
-        }
+        };
 
         this.getGeneralType = function(){
             if (this.type == Type.MIDDLE){
@@ -70,6 +70,12 @@ $(function(){
                 return GeneralType.EDGE;
             } else if (this.type > 4 && this.type < 9){
                 return GeneralType.CORNER;
+            } else {
+                // throw exception?
+                throw {
+                    name: "Type Error",
+                    message: "base type (lower left corner, right side, etc) is not found"
+                };
             }
         }
     }
@@ -77,6 +83,21 @@ $(function(){
     function Board(letters){
 
         this.letters = letters;
+        this.computeFrequencies = function(boardLetters){
+            // TODO: store list of indexes along with frequency
+            var letters = {};
+            for (var i = 0; i < boardLetters.length; i++){
+                var charCode = boardLetters[i].value;
+                if (letters[charCode] == undefined){
+                    letters[charCode] = 1;
+                } else {
+                    letters[charCode]++;
+                }
+            }
+            return letters;
+        };
+
+        this.frequencies = this.computeFrequencies(this.letters);
 
         this.setLocked = function (){
             for (var i = 0; i < this.letters.length; i++){
@@ -198,10 +219,34 @@ $(function(){
         };
 
         /**
+         * Finds possible ways to play a word
+         * @param word
+         */
+        this.findWaysToPlayWord = function (word){
+            var ways = []; // filled with arrays containing index choices
+
+            /*
+            Compare Word Frequencies to find possible pivots
+             */
+            var letters = [];
+            for (var i = 0; i < word.length; i++){
+                letters.push(new Letter(word.charAt(i),i));
+            }
+            var wordFrequencies = this.computeFrequencies(letters);
+
+            for (var key in wordFrequencies){
+                if (wordFrequencies.hasOwnProperty(key)){
+
+                }
+            }
+
+        }
+
+        /**
          * Returns a new board representing what would happen if a word was played
          * @param indexes
          */
-        this.playWord = function (indexes){
+        this.playWord = function(indexes){
             var placeholderBoard = this;
             for (var i = 0; i < indexes.length; i++){
                 var index = indexes[i];
@@ -212,10 +257,49 @@ $(function(){
             }
             return placeholderBoard;
         };
+
+        /**
+         * returns a string formed from letters at at the indexes
+         * @param indexes which letters to form the word from
+         */
+        this.getWord = function(indexes){
+            var result = "";
+            for(var i = 0; i < indexes.length; i++){
+                result += letters[indexes[i]].value;
+            }
+            return result;
+        }
+    }
+
+    function testPermutations(){
+        var wordList = new DAGWordList(); // Set up Word List
+        wordList.addWord("AED");
+        wordList.addWord("CED");
+        wordList.addWord("BE");
+        wordList.addWord("ABCDEFG");
+        wordList.addWord("ABCDEF");
+        wordList.addWord("ABCDEFGH");
+        var wordChecker = new WordChecker();
+        wordChecker.setWordList(wordList);
+
+        var indexes = [];
+        var letters = [];
+        var letter;
+        for (var i = 'A', j = 0; j<25; i = String.fromCharCode(i.charCodeAt(0) + 1),j++){
+            letter = new Letter(i,j);
+            letters.push(letter);
+            indexes.push(j);
+        }
+
+        var initialBoard = new Board(letters);
+        wordChecker.setInitialBoard(initialBoard);
+        wordChecker.findCombinations(indexes,2,2);
+        console.log(wordChecker.getPossibleWordsToPlay());
     }
 
 
-	$('#getResult').on('click',function(){
+$(function(){
+    $('#getResult').on('click',function(){
         var lettersGiven = [];
         var indexes = [];
         var filledOut = true;
@@ -275,28 +359,46 @@ $(function(){
             initialBoard.setLocked(); // Set up initial board
             console.log(initialBoard);
 
-            var wordList = DAGWordList(); // Set up Word List
-            var wordChecker = wordChecker();
+            var wordList = new DAGWordList(); // Set up Word List
+            var wordChecker = new WordChecker();
             wordChecker.setWordList(wordList);
+            wordChecker.setInitialBoard(initialBoard);
 
-            wordList.addWord("read"); //
-            wordList.addWord("reader"); //TODO: Make this load from dictionary + start during page load
-            wordList.addWord("reading");
-            wordList.addWord("reads");
-            wordList.addWord("beds");
-            wordList.addWord("boring");
-            wordList.addWord("unfortunate");
+            wordList.addWord("READ"); // generate word bank
+            wordList.addWord("READER"); //TODO: Make this load from dictionary + start during page load
+            wordList.addWord("READS");
+            wordList.addWord("RE");
+            wordList.addWord("R");
+            wordList.addWord("READING");
 
-
+            console.log("permuted items");
+            wordChecker.findCombinations(indexes,4,4);
+            console.log("Possible 4 Letter Words Found:");
+            console.log(wordChecker.getPossibleWordsToPlay());
         }
     });
 
     $('#testPermutations').on('click',function(){
 
+//        var wordList = new DAGWordList(); // Set up Word List
+        var wordChecker = new WordChecker();
+//        wordChecker.setWordList(wordList);
+//
+//        wordList.addWord("read"); // generate word bank
+//        wordList.addWord("reader"); //TODO: Make this load from dictionary + start during page load
+//        wordList.addWord("reading");
+//        wordList.addWord("reads");
+//        wordList.addWord("beds");
+//        wordList.addWord("boring");
+//        wordList.addWord("unfortunate");
 
         var items = $('#testCase').val().split(',');
         console.log("permuted items");
-        console.log(wordChecker.permute(items));
+//        wordChecker.permute(items);
+        console.log("Possible 4 Letter Words Found:");
+        console.log(wordChecker.getPossibleWordsToPlay());
 
-    })
+    });
+
+
 });
