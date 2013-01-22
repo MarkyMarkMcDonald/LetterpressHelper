@@ -86,6 +86,35 @@
                 }
             },
 
+            topPriority: function(){
+                if (!sorted) {
+                    sort();
+                }
+
+                var element = contents[contents.length - 1];
+
+                if (element) {
+                    return element.priority;
+                } else {
+                    return undefined;
+                }
+
+            },
+
+            lowPriority: function(){
+                if (!sorted) {
+                    sort();
+                }
+
+                var element = contents[0];
+
+                if (element) {
+                    return element.priority;
+                } else {
+                    return undefined;
+                }
+            },
+
             /**
              * @member PriorityQueue
              * @param object The object to check the queue for.
@@ -125,6 +154,13 @@
             push: function(object, priority) {
                 contents.push({object: object, priority: priority});
                 sorted = false;
+            },
+
+            getContents: function(){
+                if(!sorted) {
+                    sort();
+                }
+                return contents;
             }
         };
 

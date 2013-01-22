@@ -45,17 +45,17 @@
 
 			<div class="row">
 				<div class="twelve columns">
-					<h2 class="mode-entry">Entry Mode</h2>
-					<h2 class="mode-selection hidden">Selection Mode</h2>
-					<p class="mode-entry">Select a Box to begin Entering Letters</p>
-					<p class="mode-selection hidden">Click and Drag to Claim Tiles. </p>
-					<p class="mode-selection hidden">Click and Drag with Alt Pressed to Deselect Tiles.</p>
-					<button id="getResult" class="button">Suggest Words</button>
-                    <div id="wordSuggestions">
-
+					<div class="mode-entry">
+                        <h2>Entry Mode</h2>
+                        <p>Click a Box to Begin Entering Letters</p>
                     </div>
-                    <button id="testPermutations" class="button">Test Permutations</button>
-                    <input type="text" id="testCase">
+                    <div class="mode-selection hidden">
+                        <h2>Selection Mode</h2>
+                        <p>Click and Drag to Claim Tiles. </p>
+                        <p>Click and Drag with Alt Pressed to Deselect Tiles.</p>
+                    </div>
+					<button id="getResult" class="button">Suggest Words</button>
+                    <div id="wordSuggestions"></div>
 				</div>
 			</div>
 		</div>
@@ -64,7 +64,7 @@
 		<div class="six columns">
 			<ul id="letters">
 				<!-- There are 25 -->
-				<!--<li class="letter unclaimed editable"><p>Click Me!</p></li>
+				<li class="letter unclaimed editable"><p>Click Me!</p></li>
 				<li class="letter unclaimed editable"><p></p></li>
 				<li class="letter unclaimed editable"><p></p></li>
 				<li class="letter unclaimed editable"><p></p></li>
@@ -83,7 +83,7 @@
 				<li class="letter unclaimed editable"><p></p></li>
 				<li class="letter unclaimed editable"><p></p></li>
 				<li class="letter unclaimed editable"><p></p></li>
-				<li class="letter unclaimed editable"><p></p></li>-->
+				<li class="letter unclaimed editable"><p></p></li>
 				<li class="letter unclaimed editable"><p></p></li>
 				<li class="letter unclaimed editable"><p></p></li>
 				<li class="letter unclaimed editable"><p></p></li>
@@ -96,7 +96,7 @@
 
 	<!-- Included JS Files (Uncompressed) -->
 	<script src="javascripts/foundation/jquery.js"></script>
-	
+
 	<script src="javascripts/foundation/jquery.cookie.js"></script>
 	
 	<script src="javascripts/foundation/jquery.event.move.js"></script>
@@ -137,7 +137,10 @@
   	<!-- Application Javascript, safe to override -->
   	<script src="javascripts/foundation/app.js"></script>
   	<script src="javascripts/jquery-ui-1.9.2.custom.min.js"></script>
+    <script src="javascripts/clone.js"></script>
+    <script src="javascripts/dictionary.js"></script>
     <script src="javascripts/DAGWordList.js"></script>
+    <script src="javascripts/priorityQueue.js"></script>
     <script src="javascripts/permute.js"></script>
     <script src="javascripts/bruteForceDictionaryCheck.js"></script>
     <script src="javascripts/letterEntry.js"></script>

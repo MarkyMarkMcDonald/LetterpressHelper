@@ -26,14 +26,27 @@ function wordCanBePlayed(word, board){
     return true;
 }
 
-function getTopBoards(initialBoard){
-    var topBoards = new PriorityQueue();
-    var words = ["READ","AA","READS"];
-    for (var i = 0; i < words.length; i++){
-        if (wordCanBePlayed(words[i],board)){
-            var board = initialBoard.playWord()
+function getTopBoards(initialBoard, dictionary){
+    options = {low:true};
+    var topBoards = new PriorityQueue(options);
+    for (var i = 0; i < dictionary.length; i++){
+        if (wordCanBePlayed(dictionary[i],initialBoard)){
+            var indexes = initialBoard.findWayToPlayWord(dictionary[i]);
+            var board = initialBoard.playWord(indexes);
+            board.setLocked();
+            var boardValue = board.getBoardValue();
+            // TODO: only keep top 10
+            if (topBoards.size() > 4){
+                if (boardValue > topBoards.topPriority()){
+                    topBoards.pop();
+                    topBoards.push(board,boardValue);
+                }
+            } else {
+                topBoards.push(board,boardValue);
+            }
         }
     }
+    return topBoards.getContents();
 }
 
 function basicDictionaryAndLettersTest(){
@@ -41,14 +54,21 @@ function basicDictionaryAndLettersTest(){
     var letters = [];
     var letter;
 
-    for (var i = 'A', j = 0; j<25; i = String.fromCharCode(i.charCodeAt(0) + 1),j++){
+    for (var i = 'A', j = 0; j < 25; i = String.fromCharCode(i.charCodeAt(0) + 1),j++){
         letter = new Letter(i,j);
+        letter.setType();
         letters.push(letter);
         indexes.push(j);
     }
     var board = new Board(letters);
 
-    console.log(wordCanBePlayed("READ",board));
-    console.log(wordCanBePlayed("AA",board));
-    console.log(wordCanBePlayed("READS",board));
+    var dictionary = [];
+    dictionary.push("ABF");
+    dictionary.push("ABC");
+    dictionary.push("AFGK");
+    dictionary.push("ABCDEFGHIJKLMNOPQRSTUV");
+
+    topBoards = getTopBoards(board,dictionary);
+
+    return topBoards;
 }

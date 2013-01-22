@@ -1,8 +1,8 @@
 $(function() {
-
-	var letters = $('#letters .letter');
+    var letterContainer = $('#letters');
+    var letters = letterContainer.find('.letter');
 	letters.each(function(index, element){
-		element = $(element)
+		element = $(element);
 		element.attr("data-value",index);
 	});
 
@@ -27,17 +27,17 @@ $(function() {
 	/**
 	* Turn p's into input's on div click
 	*/
-	$('#letters').on('click','.editable', function(e){
+    letterContainer.on('click','.editable', function(e){
 		replaceWithInput(this,e);
 	});
-	$('#letters').on('focus','.editable', function(e){
+    letterContainer.on('focus','.editable', function(e){
 		replaceWithInput(this,e);
 	});
 
 	/**
 	* When input's lose focus, turn them back into p's
 	*/
-	$('#letters').on('blur','.editable', function(e){
+    letterContainer.on('blur','.editable', function(e){
 		$this = $(this);
 		var contents = $this.children().eq(0);
 
@@ -55,12 +55,11 @@ $(function() {
 
 	    return true;
 	});
-	
-	$('#letters').on('keydown','.editable input', function(e){
+
+    letterContainer.on('keydown','.editable input', function(e){
 		var $this = $(this);
-		
-		var letters = $('#letters .letter');
-		var index = parseInt($this.closest(".letter").attr("data-value"));
+
+        var index = parseInt($this.closest(".letter").attr("data-value"));
 		var nextIndex = (index + 1) % (letters.length);
 		
 		var nextElem = getElemFromIndex(nextIndex, letters);
